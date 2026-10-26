@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TechGuard | School Safety</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand"><span class="brand-mark">TG</span><div><strong>TECHGUARD</strong><small>School Safety Monitor</small></div></div>
+    <div class="top-status"><span class="dot"></span><span id="topStatus">CONNECTING</span></div>
+  </header>
+  <main>
+    <section class="welcome">
+      <div><p class="eyebrow">SECURITY OPERATIONS</p><h1>Entrance monitoring</h1><p class="muted">Live camera analysis using your local YOLOv8 + ResNet18 models.</p></div>
+      <div class="pill">LOCAL AI · PRIVATE TESTING</div>
+    </section>
+    <section class="metrics">
+      <article class="metric"><span>People detected</span><strong id="people">—</strong><small>YOLOv8 person detections</small></article>
+      <article class="metric"><span>Violence score</span><strong id="confidence">—</strong><small>ResNet18 classifier output</small></article>
+      <article class="metric"><span>Motion flow</span><strong id="flow">—</strong><small>Optical-flow signal</small></article>
+      <article class="metric"><span>System status</span><strong id="status" class="status-ready">READY</strong><small id="source">No source selected</small></article>
+    </section>
+    <section class="layout">
+      <article class="panel camera-panel">
+        <div class="panel-heading"><div><p class="eyebrow">CAM-01 · ENTRANCE</p><h2>Camera demonstration</h2></div><span id="feedBadge" class="badge">OFFLINE</span></div>
+        <div class="feed"><img id="cameraFeed" alt="Live processed camera feed" src="/video-feed"><div id="feedPlaceholder"><span class="camera-icon">◉</span><strong>Camera feed is offline</strong><small>Start a webcam or upload a test video.</small></div></div>
+        <div class="controls">
+          <button id="startCamera" class="primary">Start laptop camera</button>
+          <label class="file-button" for="videoFile">Choose test video</label><input id="videoFile" type="file" accept=".mp4,.avi,.mov,.mkv,video/*">
+          <button id="startVideo" class="secondary">Run AI on video</button>
+          <button id="stop" class="danger" disabled>Stop</button>
+        </div>
+        <p class="hint">Video is processed by Python on this computer. The browser does not run the AI models itself.</p>
+      </article>
+      <aside class="panel">
+        <div class="panel-heading"><div><p class="eyebrow">AI PIPELINE</p><h2>Model status</h2></div></div>
+        <div class="model-row"><span class="model-icon">YO</span><div><strong>YOLOv8n</strong><small>Person detection</small></div><span class="model-state">LOCAL</span></div>
+        <div class="model-row"><span class="model-icon">R18</span><div><strong>ResNet18</strong><small>Violence classification</small></div><span class="model-state">LOCAL</span></div>
+        <div class="notice"><strong>Important</strong><p>AI flags are screening signals, not proof of violence or misconduct. A responsible adult should review the footage before taking action.</p></div>
+        <div class="panel-heading activity-heading"><div><p class="eyebrow">EVENT HISTORY</p><h2>Recent activity</h2></div></div>
+        <div id="events" class="events"><p class="muted">Waiting for backend events…</p></div>
+      </aside>
+    </section>
+    <section class="panel visitor-panel">
+      <div class="panel-heading"><div><p class="eyebrow">SEPARATE ACCESS WORKFLOW</p><h2>Visitor entry records</h2></div><span class="badge neutral">MANUAL RECORDS</span></div>
+      <p class="muted">The camera models do not identify people or decide who is authorised to enter. Use a school-approved visitor register for that.</p>
+      <form id="visitorForm" class="visitor-form">
+        <input id="visitorName" placeholder="Visitor name" required maxlength="100">
+        <input id="visitorPurpose" placeholder="Purpose / person visiting" required maxlength="160">
+        <select id="visitorDecision"><option value="Pending review">Pending review</option><option value="Authorised">Authorised</option><option value="Denied">Denied</option></select>
+        <button class="primary" type="submit">Add entry record</button>
+      </form>
+      <div class="table-wrap"><table><thead><tr><th>Time</th><th>Visitor</th><th>Purpose</th><th>Decision</th></tr></thead><tbody id="visitorRows"><tr><td colspan="4" class="muted">No records added in this browser session.</td></tr></tbody></table></div>
+    </section>
+    <footer>TechGuard prototype · Local testing only · Do not use as the sole basis for school access or disciplinary decisions.</footer>
+  </main>
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
